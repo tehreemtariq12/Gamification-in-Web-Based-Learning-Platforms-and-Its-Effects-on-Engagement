@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Quiz App</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Helper function to shuffle options
+    function shuffleOptions(options) {
+      return options.sort(() => 0.5 - Math.random());
+    }
+
+    // Questions data (shuffled options)
+    const questions = [
+      { id: 1, question: "What is the capital of France?", options: shuffleOptions(["Paris", "Berlin", "Madrid", "Lisbon"]), correct: "Paris" },
+      { id: 2, question: "Which planet is known as the Red Planet?", options: shuffleOptions(["Mars", "Venus", "Jupiter", "Saturn"]), correct: "Mars" },
+      { id: 3, question: "Who wrote the play 'Hamlet'?", options: shuffleOptions(["William Shakespeare", "Leo Tolstoy", "George Orwell", "Jane Austen"]), correct: "William Shakespeare" },
+      { id: 4, question: "Which element has the chemical symbol 'O'?", options: shuffleOptions(["Oxygen", "Osmium", "Oxide", "Opal"]), correct: "Oxygen" },
+      { id: 5, question: "What is the largest ocean on Earth?", options: shuffleOptions(["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean"]), correct: "Pacific Ocean" },
+      { id: 6, question: "How many continents are there?", options: shuffleOptions(["7", "5", "6", "8"]), correct: "7" },
+      { id: 7, question: "Which country hosted the 2016 Summer Olympics?", options: shuffleOptions(["Brazil", "China", "UK", "Russia"]), correct: "Brazil" },
+      { id: 8, question: "What is H2O commonly known as?", options: shuffleOptions(["Water", "Oxygen", "Hydrogen", "Salt"]), correct: "Water" },
+      { id: 9, question: "What is the square root of 81?", options: shuffleOptions(["9", "8", "7", "6"]), correct: "9" },
+      { id: 10, question: "In which continent is the Sahara Desert located?", options: shuffleOptions(["Africa", "Asia", "Australia", "South America"]), correct: "Africa" },
+      { id: 11, question: "Which language has the most native speakers?", options: shuffleOptions(["Mandarin Chinese", "English", "Spanish", "Hindi"]), correct: "Mandarin Chinese" },
+      { id: 12, question: "Which organ pumps blood through the body?", options: shuffleOptions(["Heart", "Lungs", "Liver", "Kidney"]), correct: "Heart" },
+      { id: 13, question: "Which planet is closest to the sun?", options: shuffleOptions(["Mercury", "Venus", "Earth", "Mars"]), correct: "Mercury" },
+      { id: 14, question: "Which vitamin is produced when a person is exposed to sunlight?", options: shuffleOptions(["Vitamin D", "Vitamin A", "Vitamin C", "Vitamin B"]), correct: "Vitamin D" },
+      { id: 15, question: "Which continent is the largest by area?", options: shuffleOptions(["Asia", "Africa", "Europe", "North America"]), correct: "Asia" },
+      { id: 16, question: "How many legs does a spider have?", options: shuffleOptions(["8", "6", "10", "12"]), correct: "8" },
+      { id: 17, question: "What is the chemical symbol for gold?", options: shuffleOptions(["Au", "Ag", "Gd", "Go"]), correct: "Au" },
+      { id: 18, question: "Who painted the Mona Lisa?", options: shuffleOptions(["Leonardo da Vinci", "Michelangelo", "Van Gogh", "Picasso"]), correct: "Leonardo da Vinci" },
+      { id: 19, question: "What is the boiling point of water in Celsius?", options: shuffleOptions(["100", "90", "80", "120"]), correct: "100" },
+      { id: 20, question: "What is the currency of Japan?", options: shuffleOptions(["Yen", "Won", "Dollar", "Euro"]), correct: "Yen" },
+      { id: 21, question: "Which gas do plants absorb from the atmosphere?", options: shuffleOptions(["Carbon Dioxide", "Oxygen", "Nitrogen", "Hydrogen"]), correct: "Carbon Dioxide" },
+      { id: 22, question: "What is the hardest natural substance on Earth?", options: shuffleOptions(["Diamond", "Gold", "Iron", "Quartz"]), correct: "Diamond" },
+      { id: 23, question: "How many degrees are in a right angle?", options: shuffleOptions(["90", "45", "180", "60"]), correct: "90" },
+      { id: 24, question: "Who is known as the father of computers?", options: shuffleOptions(["Charles Babbage", "Alan Turing", "Isaac Newton", "Bill Gates"]), correct: "Charles Babbage" },
+      { id: 25, question: "Which instrument measures atmospheric pressure?", options: shuffleOptions(["Barometer", "Thermometer", "Hygrometer", "Altimeter"]), correct: "Barometer" },
+      { id: 26, question: "What is the largest mammal in the world?", options: shuffleOptions(["Blue Whale", "Elephant", "Hippopotamus", "Giraffe"]), correct: "Blue Whale" },
+      { id: 27, question: "Which country is known as the Land of the Rising Sun?", options: shuffleOptions(["Japan", "China", "Thailand", "South Korea"]), correct: "Japan" },
+      { id: 28, question: "What is the smallest prime number?", options: shuffleOptions(["2", "1", "3", "5"]), correct: "2" },
+      { id: 29, question: "Which is the longest river in the world?", options: shuffleOptions(["Nile", "Amazon", "Yangtze", "Mississippi"]), correct: "Nile" },
+      { id: 30, question: "Which language is used to style web pages?", options: shuffleOptions(["CSS", "HTML", "Python", "JavaScript"]), correct: "CSS" },
+      { id: 31, question: "Which famous scientist developed the theory of relativity?", options: shuffleOptions(["Albert Einstein", "Galileo", "Marie Curie", "Stephen Hawking"]), correct: "Albert Einstein" },
+      { id: 32, question: "Which continent has the most countries?", options: shuffleOptions(["Africa", "Asia", "Europe", "South America"]), correct: "Africa" },
+      { id: 33, question: "What is the freezing point of water in Celsius?", options: shuffleOptions(["0", "32", "100", "-10"]), correct: "0" },
+      { id: 34, question: "What is the largest planet in our solar system?", options: shuffleOptions(["Jupiter", "Saturn", "Earth", "Neptune"]), correct: "Jupiter" },
+      { id: 35, question: "Who was the first person to walk on the moon?", options: shuffleOptions(["Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "John Glenn"]), correct: "Neil Armstrong" },
+      { id: 36, question: "Which organ is responsible for filtering blood?", options: shuffleOptions(["Kidney", "Liver", "Heart", "Lungs"]), correct: "Kidney" },
+      { id: 37, question: "What is the main ingredient in bread?", options: shuffleOptions(["Flour", "Sugar", "Salt", "Oil"]), correct: "Flour" },
+      { id: 38, question: "Which is the only even prime number?", options: shuffleOptions(["2", "4", "6", "8"]), correct: "2" },
+      { id: 39, question: "What is the chemical formula for table salt?", options: shuffleOptions(["NaCl", "H2O", "CO2", "KCl"]), correct: "NaCl" },
+      { id: 40, question: "Which desert is the largest in the world?", options: shuffleOptions(["Sahara", "Arctic", "Gobi", "Kalahari"]), correct: "Sahara" },
+      { id: 41, question: "Which city is known as the Big Apple?", options: shuffleOptions(["New York", "Los Angeles", "Chicago", "San Francisco"]), correct: "New York" },
+      { id: 42, question: "Which metal is liquid at room temperature?", options: shuffleOptions(["Mercury", "Iron", "Aluminum", "Copper"]), correct: "Mercury" },
+      { id: 43, question: "How many planets are in our solar system?", options: shuffleOptions(["8", "9", "7", "10"]), correct: "8" },
+      { id: 44, question: "Which blood type is known as the universal donor?", options: shuffleOptions(["O Negative", "AB Positive", "A Positive", "B Negative"]), correct: "O Negative" },
+      { id: 45, question: "What is the tallest mountain in the world?", options: shuffleOptions(["Mount Everest", "K2", "Kangchenjunga", "Lhotse"]), correct: "Mount Everest" },
+      { id: 46, question: "How many bones are in the adult human body?", options: shuffleOptions(["206", "201", "208", "210"]), correct: "206" },
+      { id: 47, question: "Which country invented paper?", options: shuffleOptions(["China", "Egypt", "Greece", "India"]), correct: "China" },
+      { id: 48, question: "What is the speed of light?", options: shuffleOptions(["299,792 km/s", "150,000 km/s", "1,080 km/h", "3,000 km/s"]), correct: "299,792 km/s" },
+      { id: 49, question: "What is the main gas in the Earth's atmosphere?", options: shuffleOptions(["Nitrogen", "Oxygen", "Carbon Dioxide", "Hydrogen"]), correct: "Nitrogen" },
+      { id: 50, question: "Which country has the most population?", options: shuffleOptions(["India", "China", "USA", "Indonesia"]), correct: "India" },
+
+      // Add 80 more questions following the same format
+    ];
+  </script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Start Screen -->
+  <div id="start-screen" class="flex flex-col items-center justify-center min-h-screen bg-gray-200 p-6 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold text-blue-600 mb-4">Welcome to the Quiz!</h1>
+    <p class="text-lg mb-4">Please enter your name to begin.</p>
+    <form id="start-form" class="space-y-4">
+      <input type="text" id="username" placeholder="Enter your name" class="w-full p-3 border rounded-lg text-gray-700" />
+      <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Start Quiz</button>
+    </form>
+  </div>
+
+  <!-- Quiz Container (Hidden initially) -->
+  <div id="quiz-container" class="hidden p-6">
+    <!-- Questions will be dynamically injected here -->
+  </div>
+
+  <!-- ✅ Include your logic file at the bottom -->
+  <script src="quiz.js"></script>
+</body>
+</html>
